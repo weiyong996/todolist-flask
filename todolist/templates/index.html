@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<link rel="stylesheet" href="{{url_for('static', filename='style.css')}}" type="text/css">
+	<script src="https://at.alicdn.com/t/font_2782971_vzc0930jyo.js"></script>
+	<style type="text/css">
+	    .icon {
+	       width: 1em; height: 1em;
+	       vertical-align: -0.15em;
+	       fill: currentColor;
+	       overflow: hidden;
+	    }
+	</style>
+</head>
+<body>
+	<main class="container">
+		<div class="left">
+			<h1>待办事项</h1>
+			<form class="todo" method="post" action="{{ url_for('add') }}">
+<!--				<input class="first" type="text" name="todo" id="todo" placeholder="请输入待办事项">-->
+<!--				<input class="btn" type="submit" value="添加">-->
+				{{ form.csrf_token }}
+				{{ form.content(class="first") }}
+				{{ form.submit(class="btn") }}
+			</form>
+			<small>共有 {{ items|length }} 个待办事项</small>
+			<br><br>
+			<form action="" class="btnwrapper", method="post">
+				<input class="btn todone " type="submit" value="转为已办事项">
+				<input class="btn delete" type="submit" value="删除">
+			</form>
+			<div class="todolist">
+				{% for item in items %}
+				<div>
+					<div class="child content">
+						<input type="checkbox" name="select" id="{{item.id}}">
+						<span class="item">{{ item.content }}</span>
+					</div>
+					<div class="child btn2">
+						<span>
+							<a class="edit">
+								<svg class="icon" aria-hidden="true">
+									<use xlink:href="#icon-bianji2"></use>
+								</svg>
+							</a>
+						</span>
+						<span>
+							<a class="delete" href="{{ url_for('delete', item_id=item.id) }}">
+								<svg class="icon" aria-hidden="true">
+									<use xlink:href="#icon-shanchu2"></use>
+								</svg>
+							</a>
+						</span>
+						<span>
+							<a class="completed" href="{{ url_for('completed', item_id=item.id) }}">
+								<svg class="icon" aria-hidden="true">
+									<use xlink:href="#icon-wancheng"></use>
+								</svg>
+							</a>
+						</span>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+
+		<div class="right">
+			<h1>已办事项</h1>
+			<form action="" class="btnwrapper">
+				<input class="btn todone " type="submit" value="转为待办事项">
+				<input class="btn delete" type="submit" value="删除">
+			</form>
+			<div class="todolist">
+				{% for completed_item in completed_items %}
+				<div>
+					<div class="child content">
+						<input type="checkbox" name="checkbox">
+						<span class="item">{{ completed_item.content }}</span>
+					</div>
+					<div class="child btn2">
+						<span class="delete">
+							<a href="{{ url_for('delete_completed_item', completed_id=completed_item.id) }}">
+								<svg class="icon" aria-hidden="true">
+									<use xlink:href="#icon-shanchu2"></use>
+								</svg>
+							</a>
+						</span>
+						<span class="transtodo">
+							<a href="{{ url_for('back_todo', completed_item_id=completed_item.id) }}">
+								<svg class="icon" aria-hidden="true">
+									<use xlink:href="#icon-Leftxiangzuo31"></use>
+								</svg>
+							</a>
+						</span>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+	</main>
+</body>
+</html>
