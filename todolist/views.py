@@ -2,7 +2,7 @@ from flask import flash, redirect, url_for, render_template, abort, request
 
 from todolist import app, db
 from todolist.models import Item, CompletedItem
-from todolist.forms import ItemForm, CompleteAndDeleteForm
+from todolist.forms import ItemForm, CompleteAndDeleteForm, EditItemForm
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -60,3 +60,16 @@ def delete_completed_item(completed_id):
     db.session.commit()
     return redirect(url_for('index'))
 
+
+@app.route('/edit/<int:item_id>', methods=['GET', 'POST'])
+def edit(item_id):
+    edit_form = EditItemForm(request.form)
+    edit_item = Item.query.get(item_id)
+    print(11111, request.method, edit_form.validate(), edit_form.content.data)
+    if edit_form.validate_on_submit():
+        print(22222)
+        edit_item.content = edit_form.content.data
+        db.session.commit()
+        return redirect(url_for('index'))
+    edit_form.content.data = edit_item.content
+    return render_template('edit.html', edit_form=edit_form)

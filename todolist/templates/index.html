@@ -41,7 +41,7 @@
 					</div>
 					<div class="child btn2">
 						<span>
-							<a class="edit">
+							<a class="edit" href="{{ url_for('edit', item_id=item.id) }}">
 								<svg class="icon" aria-hidden="true">
 									<use xlink:href="#icon-bianji2"></use>
 								</svg>
@@ -69,6 +69,8 @@
 
 		<div class="right">
 			<h1>已办事项</h1>
+			<small>共有 {{ completed_item |length }} 个已办事项</small>
+			<br><br>
 			<form action="" class="btnwrapper">
 				<input class="btn todone " type="submit" value="转为待办事项">
 				<input class="btn delete" type="submit" value="删除">

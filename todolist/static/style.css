@@ -13,7 +13,7 @@ main > div > form {
 	margin-bottom: 20px;
 }
 
-main > div > form.todo > input.first{
+main > div > form > input.first{
 	width: 355px;
 	height: 34px;
 	font-size: 18px;
